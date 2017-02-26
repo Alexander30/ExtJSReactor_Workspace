@@ -3,6 +3,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtJSReactorWebpackPlugin = require('@extjs/reactor-webpack-plugin');
 
 module.exports={
     devtool: 'inline-source-map',
@@ -20,7 +21,7 @@ module.exports={
     ],
     output:{
         path: path.join(__dirname, 'dist'),
-        filename: './bundle.js'
+        filename: 'bundle.js'
     },
     resolve:{
         extensions:['.js','.jsx']
@@ -31,6 +32,10 @@ module.exports={
                 test:/\.jsx$/,
                 loaders:['babel-loader'],
                 exclude: /node_modules/
+            },
+            {
+                test:/\.css$/,
+                loader:'style!css'
             }
         ]
     },
@@ -39,6 +44,10 @@ module.exports={
             hash:true,
             template:'./src/index.html'
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new ExtJSReactorWebpackPlugin({
+            sdk: '/home/atanatar/Documents/ExtJS/ext-6.2.1.167/',
+            theme: 'theme-material'
+        })
     ]
 }

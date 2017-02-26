@@ -1,3 +1,5 @@
+'use strict';
+
 var webpack = require('webpack');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -5,22 +7,26 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports={
     devtool: 'inline-source-map',
     devServer:{
-        contentBase: './dist'
+        contentBase: './dist',
+        inline: true
     },
     entry:[
-        './src/index.js'
+        './src/index.jsx'
     ],
     output:{
         path: path.join(__dirname, 'dist'),
         filename: './bundle.js'
     },
     resolve:{
-        extensions:['*','.js']
+        extensions:['.js','.jsx'],
+        alias:{
+            "react-dom":path.resolve('./node_modules/react-dom')
+        }
     },
     module:{
         loaders:[
             {
-                test:/\.js$/,
+                test:/\.jsx$/,
                 loaders:['babel-loader'],
                 exclude: /node_modules/
             }
@@ -28,9 +34,8 @@ module.exports={
     },
     plugins:[
         new HtmlWebpackPlugin({
-            filename:'index.html',
             hash:true,
-            tempalte:'./src/index.html'
+            template:'./src/index.html'
         })
     ]
 }

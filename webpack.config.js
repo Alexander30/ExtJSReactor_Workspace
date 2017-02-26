@@ -9,12 +9,13 @@ module.exports={
     devServer:{
         contentBase: './dist',
         //inline:true,
-       // hot:true
+        hot:true
     },
     entry:[
         //Webpack Automatic refresh Inline mode with Node.js API
         'webpack-dev-server/client?http://localhost:8080/',
-       // 'webpack/hot/only-dev-server',
+        // HMR with node.js API
+        'webpack/hot/only-dev-server',
         './src/index.jsx'
     ],
     output:{
@@ -37,6 +38,7 @@ module.exports={
         new HtmlWebpackPlugin({
             hash:true,
             template:'./src/index.html'
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin()
     ]
 }

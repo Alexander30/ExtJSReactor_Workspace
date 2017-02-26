@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "webpack-watch": "webpack -w --colors",
-    "webpack-server": "webpack-dev-server",
-    "start": "webpack-dev-server --progress --profile --colors --config webpack.config.js"
+    "webpack-server": "webpack-dev-server --progress --profile --colors --config webpack.config.js",
+    "start": "concurrently --kill-others \"npm run webpack-watch\" \"npm run webpack-server\""
   },
   "repository": {
     "type": "git",

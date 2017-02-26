@@ -8,9 +8,13 @@ module.exports={
     devtool: 'inline-source-map',
     devServer:{
         contentBase: './dist',
-        inline: true
+        //inline:true,
+       // hot:true
     },
     entry:[
+        //Webpack Automatic refresh Inline mode with Node.js API
+        'webpack-dev-server/client?http://localhost:8080/',
+       // 'webpack/hot/only-dev-server',
         './src/index.jsx'
     ],
     output:{
@@ -18,10 +22,7 @@ module.exports={
         filename: './bundle.js'
     },
     resolve:{
-        extensions:['.js','.jsx'],
-        alias:{
-            "react-dom":path.resolve('./node_modules/react-dom')
-        }
+        extensions:['.js','.jsx']
     },
     module:{
         loaders:[

@@ -1,53 +1,72 @@
 'use strict';
 
-var webpack = require('webpack');
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtJSReactorWebpackPlugin = require('@extjs/reactor-webpack-plugin');
+const sourcePath = path.join(__dirname, './src');
 
 module.exports={
-    devtool: 'inline-source-map',
-    devServer:{
-        contentBase: './dist',
-        //inline:true,
-        hot:true
-    },
+    devtool: 'eval',
+    context:sourcePath,
+    
     entry:[
-        //Webpack Automatic refresh Inline mode with Node.js API
-        'webpack-dev-server/client?http://localhost:8080/',
-        // HMR with node.js API
-        'webpack/hot/only-dev-server',
-        './src/index.jsx'
+        './index.js'
     ],
     output:{
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'build'),
         filename: 'bundle.js'
     },
-    resolve:{
-        extensions:['.js','.jsx']
-    },
     module:{
-        loaders:[
+        rules:[
             {
-                test:/\.jsx$/,
-                loaders:['babel-loader'],
+                test:/\.(js|jsx)$/,
+                use:['babel-loader'],
                 exclude: /node_modules/
-            },
-            {
-                test:/\.css$/,
-                loader:'style!css'
             }
         ]
     },
     plugins:[
+        new ExtJSReactorWebpackPlugin({
+            sdk: 'c:\\Users\\ToolsTeam\\Documents\\Architect\\frameworks\\ext62\\6.2.1.167\\commercial',
+            theme: 'theme-material',
+            production:false,
+            packages:['charts']
+        }),
         new HtmlWebpackPlugin({
             hash:true,
-            template:'./src/index.html'
+            template:'index.html'
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new ExtJSReactorWebpackPlugin({
-            sdk: '/home/atanatar/Documents/ExtJS/ext-6.2.1.167/',
-            theme: 'theme-material'
-        })
-    ]
+        
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development'
+        }),
+        new webpack.HotModuleReplacementPlugin()
+        
+    ],
+    stats: {
+        colors: {
+            green: '\u001b[32m',
+        }
+    },
+    devServer:{
+        contentBase: './build',
+        inline:true,
+        hot:true,
+        stats:{
+                assets: true,
+                children: false,
+                chunks: false,
+                hash: false,
+                modules: false,
+                publicPath: false,
+                timings: true,
+                version: false,
+                warnings: true,
+            colors:{
+                green:'\u001b[32m'
+            }
+        }
+    },
+
 }
